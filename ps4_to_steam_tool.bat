@@ -2,12 +2,9 @@
 setlocal enabledelayedexpansion
 
 ::-----------------------------------------------------------------------------
-:: Steam Screenshot Automator (Final Portable Version)
+:: PS4-to-Steam Screenshot Tool
 ::
-:: This version is now portable. It looks for 'exiftool.exe' in the same
-:: folder as the script itself, which is more reliable than using C:\Windows.
-::
-:: FINAL INSTRUCTIONS:
+:: INSTRUCTIONS:
 :: 1. Place 'exiftool.exe' in the SAME FOLDER as this .bat file.
 :: 2. Ensure ImageMagick is installed.
 ::-----------------------------------------------------------------------------
@@ -16,20 +13,20 @@ setlocal enabledelayedexpansion
 :: USER-CONFIGURABLE VARIABLES
 ::-----------------------------------------------------------------------------
 set "STEAM_PATH=C:\Program Files (x86)\Steam"
-set "USER_ID=232674369"
 
 ::-----------------------------------------------------------------------------
 :: SCRIPT LOGIC - DO NOT EDIT BELOW THIS LINE
 ::-----------------------------------------------------------------------------
 
-:: --- Define paths for external tools ---
+:: --- Define paths for external tools and config file ---
 set "EXIFTOOL_PATH=%~dp0exiftool.exe"
-set "LOG_FILE=%~dp0steam_automator_log.txt"
+set "CONFIG_FILE=%~dp0steam_user_id.txt"
+set "LOG_FILE=%~dp0ps4_to_steam_tool_log.txt"
 if exist "%LOG_FILE%" del "%LOG_FILE%"
 
 echo.
 echo  ====================================
-echo    Steam Screenshot Automator
+echo    PS4-to-Steam Screenshot Tool
 echo  ====================================
 echo.
 
@@ -46,8 +43,26 @@ if not exist "%EXIFTOOL_PATH%" (
     goto :end
 )
 
-echo [INFO] Using pre-set User ID: %USER_ID%
+:: --- One-Time User ID Setup ---
+if exist "%CONFIG_FILE%" (
+    set /p USER_ID=<"%CONFIG_FILE%"
+    echo [INFO] Using saved User ID: !USER_ID!
+) else (
+    echo [SETUP] This is a one-time setup.
+    echo Please provide your Steam UserData ID. You can find this number in the
+    echo C:\Program Files (x86)\Steam\userdata folder.
+    echo.
+    set /p "USER_ID=Enter your Steam UserData ID: "
+    if not defined USER_ID (
+        echo [ERROR] No User ID entered. Exiting.
+        goto :end
+    )
+    echo !USER_ID! > "%CONFIG_FILE%"
+    echo [SUCCESS] User ID saved for future use.
+)
 echo.
+
+:: --- Get Game ID and Source Folder ---
 set /p "GAME_ID=Enter the game's App ID: "
 echo.
 
@@ -77,16 +92,17 @@ set /a "file_counter=1"
 for %%F in ("%SOURCE_FOLDER%\*.jpg" "%SOURCE_FOLDER%\*.png" "%SOURCE_FOLDER%\*.bmp") do (
     if exist "%%F" (
         set "original_filename=%%~nF"
-        set "datestring="
-        for /f "tokens=2 delims=_" %%d in ("!original_filename!") do (
-            set "datestring=%%d"
-        )
+        
+        set "temp_name=!original_filename:_=\!"
+        for %%a in ("!temp_name!") do set "datestring=%%~nxa"
+
         if defined datestring if not "!datestring:~7,1!"=="" (
             set "year=!datestring:~0,4!"
             set "month=!datestring:~4,2!"
             set "day=!datestring:~6,2!"
             set "file_date=!year!-!month!-!day!"
         ) else (
+            echo [WARNING] Could not parse date from "%%~nxF". Using current date.
             for /f "tokens=2-4 delims=/ " %%a in ('date /t') do (
                 set "file_date=%%c-%%a-%%b"
             )
@@ -136,9 +152,8 @@ for %%F in ("%SOURCE_FOLDER%\*.jpg" "%SOURCE_FOLDER%\*.png" "%SOURCE_FOLDER%\*.b
 )
 
 echo [SUCCESS] All files have been processed.
-echo [ACTION] Opening folders and relaunching Steam...
+echo [ACTION] Opening screenshot folder and relaunching Steam...
 start "" "%SCREENSHOTS_DIR%"
-start "" "%THUMBNAILS_DIR%"
 start "" "%STEAM_PATH%\steam.exe"
 
 echo.
@@ -148,5 +163,4 @@ echo  ====================================
 echo.
 
 :end
-echo Press any key to exit.
-pause >nul
+exit
