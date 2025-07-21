@@ -19,15 +19,14 @@ You only need one thing installed on your system:
 
 ImageMagick: A powerful image processing tool.
 
-Download ImageMagick here: https://imagemagick.org/script/download.php
+Download [ImageMagick](https://imagemagick.org/script/download.php) here: 
 
 Important: During installation, make sure to check the box that says "Add application directory to your system path" (or similar).
 
 This tool already includes exiftool.exe so you don't need to install it separately.
 
 How to Use
-Download the latest release:
-https://github.com/Egan354/PS4-to-Steam-Screenshot-Tool/releases Go to the Releases page and download the .zip file.
+Download the [latest release](https://github.com/Egan354/PS4-to-Steam-Screenshot-Tool/releases): Go to the Releases page and download the .zip file.
 
 Unzip the folder: Extract the contents to a convenient location, like your Desktop.
 
