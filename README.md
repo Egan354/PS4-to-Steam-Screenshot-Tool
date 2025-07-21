@@ -1,51 +1,76 @@
-PS4-to-Steam Screenshot Tool
-A simple but powerful tool to convert screenshots from your PS4 (or any other source) into the correct format for Steam, preserving the original "Date Taken."
+# PS4-to-Steam Screenshot Tool
 
-This tool automates the entire process of renaming, resizing, and setting the correct file dates and internal metadata, making your custom screenshots appear perfectly in the Steam Uploader.
+A simple but effective tool to convert screenshots from your PS4 into the correct format for Steam, while preserving the original "Date Taken."
 
-Features
-Automatic Renaming: Converts your files to Steam's YYYY-MM-DD_#####.jpg format.
+This tool automates the process of renaming files, generating thumbnails, and setting correct timestamps and metadata, making your custom screenshots appear correctly in the Steam Uploader.
 
-Date Preservation: Reads the date from your original PS4 filename (e.g., 20220708...) and applies it to the new file.
+---
 
-Correct Timestamps: Sets the "Date Created," "Date Modified," and internal EXIF "Date Taken" metadata, so Steam shows the correct date.
+## Features
 
-Automatic Thumbnails: Creates the required 200x112 thumbnails for the Steam Uploader.
+- **Automatic Renaming**  
+  Converts filenames into Steam's required `YYYY-MM-DD_#####.jpg` format.
 
-Simple Drag-and-Drop: Just drag your folder of screenshots onto the script to start.
+- **Date Extraction**  
+  Parses the original date from PS4 filenames (e.g., `20220708...`) and applies it to the new file.
 
-Prerequisites
-You only need one thing installed on your system:
+- **Accurate Timestamps**  
+  Sets `Date Created`, `Date Modified`, and the EXIF `Date Taken` metadata.
 
-ImageMagick: A powerful image processing tool.
+- **Thumbnail Generation**  
+  Automatically creates 200x112 thumbnails required for the Steam Uploader.
 
-Download [ImageMagick](https://imagemagick.org/script/download.php) here: 
+- **Drag-and-Drop Simplicity**  
+  Process an entire folder by simply dragging it onto the script.
 
-Important: During installation, make sure to check the box that says "Add application directory to your system path" (or similar).
+---
 
-This tool already includes exiftool.exe so you don't need to install it separately.
+## Prerequisites
 
-How to Use
-Download the [latest release](https://github.com/Egan354/PS4-to-Steam-Screenshot-Tool/releases): Go to the Releases page and download the .zip file.
+The tool requires [ImageMagick](https://imagemagick.org/script/download.php) to be installed.
 
-Unzip the folder: Extract the contents to a convenient location, like your Desktop.
+**Installation Note:**  
+During setup, ensure you check the option to _"Add application directory to your system path"_.
 
-Prepare your screenshots: Place all the screenshots you want to convert into a single folder. For best results, make sure your filenames include the date, like Screenshot_20220708155658.jpg.
+> `exiftool.exe` is already included, so no additional installation is required.
 
-Drag and Drop: Click and drag your folder of screenshots directly onto the ps4_to_steam_tool.bat file.
+---
 
-Enter the Game ID: A window will pop up asking for the game's App ID. You can find this in the URL of the game's Steam store page (e.g., for Cuphead, the URL is store.steampowered.com/app/268910/, so the ID is 268910).
+## Usage
 
-Done! The script will automatically process everything, open the final folders for you to check, and relaunch Steam. Your screenshots will be ready in the Steam Uploader with the correct dates.
+1. **Download the [latest release](https://github.com/Egan354/PS4-to-Steam-Screenshot-Tool/releases)**  
+   Grab the `.zip` file from the Releases section.
 
-How It Works
-This tool uses a combination of a Windows Batch script and two powerful command-line utilities:
+2. **Extract the files**  
+   Unzip the contents to a folder of your choice (e.g., Desktop).
 
-ImageMagick: For converting images and creating thumbnails.
+3. **Prepare your screenshots**  
+   Place all screenshots to be converted in a single folder.  
+   For best results, filenames should include a timestamp like `Screenshot_20220708155658.jpg`.
 
-ExifTool: For writing the correct "Date Taken" metadata into the image files.
+4. **Run the tool**  
+   Drag your screenshot folder onto `ps4_to_steam_tool.bat`.
 
-PowerShell: For setting the file system's "Date Created" and "Date Modified" timestamps.
+5. **Enter the Steam App ID**  
+   When prompted, input the App ID of the game.  
+   For example, Cuphead’s store URL is `https://store.steampowered.com/app/268910/`, so the App ID is `268910`.
 
-Contributing
-Feel free to fork this project, suggest improvements, or submit pull requests.
+6. **Done**  
+   The tool will process your files, open the output folder, and relaunch Steam.  
+   Your screenshots will be ready for upload with the correct metadata.
+
+---
+
+## How It Works
+
+This tool is built using:
+
+- **ImageMagick** for image conversion and thumbnail generation  
+- **ExifTool** for writing EXIF metadata  
+- **PowerShell** for setting filesystem-level timestamps
+
+---
+
+## Contributing
+
+Contributions are welcome. Feel free to fork the repository, submit issues, or open pull requests with improvements or bug fixes.
